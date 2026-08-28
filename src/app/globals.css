@@ -171,4 +171,3 @@ body { position: relative; overflow-x: hidden; cursor: none; }
 @media (prefers-reduced-motion: reduce) {
   [style*="beacon-ping"] { animation: none !important; opacity: 0 !important; }
 }
-
