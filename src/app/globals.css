@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: auto; }
+
+body { position: relative; overflow-x: hidden; cursor: none; }
+
+@media (hover: none) {
+  body { cursor: auto; }
+}
+
+::selection { background: #ff4519; color: #0a0a0a; }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ff4519 transparent;
+}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ff4519; border-radius: 8px; }
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #f5f3ee;
+  pointer-events: none;
+  z-index: 200;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease-out, height 0.4s ease-out;
+  mix-blend-mode: difference;
+}
+.cursor-dot.big { width: 80px; height: 80px; }
+
+@media (hover: none) {
+  .cursor-dot { display: none; }
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid #ff4519;
+  pointer-events: none;
+  z-index: 199;
+  transform: translate(-50%, -50%);
+  transition: left 0.55s cubic-bezier(0.16, 1, 0.3, 1), top 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out, border-color 0.4s ease-out;
+  opacity: 0.5;
+}
+.cursor-ring.big {
+  width: 110px;
+  height: 110px;
+  border-color: #f5f3ee;
+  opacity: 0.35;
+}
+
+@media (hover: none) {
+  .cursor-ring { display: none; }
+}
+
+.marquee-track {
+  display: inline-flex;
+  gap: 48px;
+  animation: scroll-left 34s linear infinite;
+}
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.scrollline {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #ff4519;
+  transform: translateX(-100%);
+  animation: scrollline-move 2.4s ease-in-out infinite;
+}
+@keyframes scrollline-move {
+  50% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --ambient {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #1fb6a4;
+}
+
+.border-beam::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--border-angle), transparent 74%, var(--glow, #ff4519) 92%, transparent 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-beam-rotate 5s linear infinite;
+  pointer-events: none;
+}
+@keyframes border-beam-rotate {
+  to { --border-angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .border-beam::before { animation: none; }
+}
+
+.meteor {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--glow, #ff4519);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation: meteor-fall linear infinite;
+}
+.meteor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 64px;
+  height: 1px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, var(--glow, #ff4519), transparent);
+}
+@keyframes meteor-fall {
+  0% { transform: rotate(215deg) translateX(0); opacity: 0; }
+  8% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: rotate(215deg) translateX(-320px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .meteor { animation: none; opacity: 0; }
+}
+
+@keyframes contact-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*="contact-pulse"] { animation: none !important; }
+}
+
+@keyframes beacon-ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  75%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*="beacon-ping"] { animation: none !important; opacity: 0 !important; }
+}
+
